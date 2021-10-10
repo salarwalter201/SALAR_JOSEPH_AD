@@ -4,23 +4,25 @@ import { InformationEvent } from 'http';
 import { User } from './user.module';
 import { v4 as uuidv4 } from 'uuid';
 import { Helper } from './helper';
+import * as admin from 'firebase-admin';
+const DEBUG: boolean = true;
 
 
 @Injectable()
 export class UserService {
 
     private users : Map<string,User> = new Map<string,User>();
-    
+    private DB = admin.firestore();
     private populatedData : Map<string,User> = Helper.populate();
     
     constructor()
     {
-        console.log("shets");
+        
 
         this.users = Helper.populate();
         console.log(this.users);
     }
-     register(body:any){
+    async register(body:any){
         var unDefined;
         var user = null;
         var id = uuidv4();
@@ -47,9 +49,9 @@ export class UserService {
                 } 
             }
 
-            var existingUser = this.getId(body.id);
-            var existingUserEmail = this.searchUser(body.email);
-
+            var existingUser = await this.getId(body.id);
+            var existingUserEmail = await this.searchUser(body.email);
+            
             if (typeof existingUser.data != typeof ""  )
             {
                 return {
@@ -66,8 +68,8 @@ export class UserService {
                 } 
             }
         
-            
             user = new User(id , body.name, body.age, body.email, body.password);
+            this.saveToDb(user);
             this.populatedData.set(id, user);
             
         } catch(e)
@@ -87,10 +89,16 @@ export class UserService {
         };
         
     } 
-
-    getAll(){
+   
+    async getAll() {
 
         var userList = [];
+        this.populatedData = null;  
+        await this.getLatestFromFirebase();  
+
+        
+
+
         this.populatedData.forEach((u)=>
         {
             var user = u;
@@ -111,9 +119,10 @@ export class UserService {
        }
     }
 
-     getId(id :any){
+     async getId(id :any){
         var data = null;
-
+        this.populatedData = null;  
+        await this.getLatestFromFirebase();
 
         this.populatedData.forEach((u)=>
         {
@@ -149,7 +158,7 @@ export class UserService {
        return data;
     }
 
-    editUser(id:any, body:any)
+    async editUser(id:any, body:any)
     {
         var unDefined;
         var user = null;
@@ -183,11 +192,11 @@ export class UserService {
                 }
                     
             }
+                
+            var existingUser = await this.getId(body.id); 
+            var existingUserEmail = await this.searchUser(body.email); 
 
-            var existingUser = this.getId(body.id).success;
-            var existingUserEmail = this.searchUser(body.email).success; 
-
-            if (existingUser ) 
+            if (existingUser.success ) 
             {
                 return {
                     success: false,
@@ -195,15 +204,16 @@ export class UserService {
                 }
             }
 
-            if (existingUserEmail)
+            if (existingUserEmail.success)
             {
                 return {
                     success: false,
                     data: "Email already exist in database!"
                 }
             }
-//hmmmmmm
+
             var updatedUser = new User(user.id, body.name, body.age, body.email, body.password);
+            this.saveToDb(updatedUser);
             this.populatedData.set(user.id,updatedUser);
 
             updatedUser.password = null;
@@ -234,7 +244,7 @@ export class UserService {
        }
     }
 
-    patchUser(id:any, body:any)
+    async patchUser(id:any, body:any)
     {
 
         var hasChanged = false;
@@ -244,7 +254,7 @@ export class UserService {
             var user = null;
             if ( body.email != null )
             {
-                 existingUserEmail = this.searchUser(body.email).success;
+                 existingUserEmail = (await this.searchUser(body.email)).success;
             }
 
             this.populatedData.forEach((u) =>
@@ -333,6 +343,7 @@ export class UserService {
         if(hasChanged)
         {
             var updatedUser = new User(user.id, user.name, user.age, user.email, user.password);
+            this.saveToDb(updatedUser);
             this.populatedData.set(user.id, updatedUser); 
             return {
                 success: true,
@@ -363,11 +374,15 @@ export class UserService {
        
     }
 
-    searchUser(term : any)
+    async searchUser(term : any)
     {
         var array = [];
         if(this.populatedData == null)
             return null;
+
+            this.populatedData = null;  
+            await this.getLatestFromFirebase();  
+        
 
         this.populatedData.forEach((u) =>
         {
@@ -399,31 +414,41 @@ export class UserService {
         }
     }
 
-    deleteUser(id :any)
+    async deleteUser(id :any)
     {
         try{
             var user = null;
+    
+            await this.getLatestFromFirebase();
             this.populatedData.forEach((u)=>
             {
-                user = u;
+                if (u.id == id )
+                {
+                    user = u;  
+                }
             })
 
             if(user)
             {
-                if (user.id == id )
-                {
+
+                    
+                    this.DB.collection("users").doc(user.id).delete().then(() => {
+                        console.log("Document successfully deleted!");
+                    }).catch((error) => {
+                        console.error("Error removing document: ", error);
+                    });
                     this.populatedData.delete(user.id);
                     return {
                         success: true,
                         data: "Successfully Deleted! ^^"
                     };
-                }
                 
             }
 
 
         }catch(e)
         {
+            console.log(e)
             return {
                 success: false,
                 data: "Error : Deletion is a failure"
@@ -436,15 +461,19 @@ export class UserService {
         };
     }
 
-    logIn( body:any )
+    async logIn( body:any )
     {
         try{
             var authenticatedUser = null;
+            await this.getLatestFromFirebase();
             if(!body)
             return {
                 success: false,
                 data: "No parameters"
             };
+
+
+            
             this.populatedData.forEach((u) =>
             {
                 var user =  u;
@@ -480,6 +509,45 @@ export class UserService {
                 data: "Email or Password is incorrect"
             } 
         }
+
+    }
+
+    saveToDb(user: User): boolean {
+        try {
+            var potato = this.DB.collection("users").doc(user.id).set(user.toJson());
+            console.log(potato);
+            this.users.set(user.id, user);
+            return this.users.has(user.id);
+        }catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    logAllUsers(){
+        console.log(this.getAll());    
+    }
+
+    async getLatestFromFirebase(){  
+        
+        this.populatedData = new Map<string,User>();
+
+        return new Promise((resolve) =>
+        {
+            this.DB.collection("users").get().then((snapshot)=>
+            {
+                snapshot.forEach((doc) =>
+                {
+                    var data = doc.data();
+                    var user = new User(data.id, data.name,data.age, data.email, data.password);
+    
+                    this.populatedData.set(doc.data().id,user ); 
+                })
+                console.log(this.populatedData);
+                resolve(true);
+            });
+        })
+
 
     }
 

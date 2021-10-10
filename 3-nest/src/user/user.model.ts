@@ -1,3 +1,4 @@
+///import { CRUDReturn } from './crud_return.interface';
 import { Helper } from './helper';
 export class User {
   public id: string;
@@ -12,4 +13,6 @@ export class User {
     this.age = age;
     this.email = email;
     this.password = password;
-  }}
+  }
+
+}
