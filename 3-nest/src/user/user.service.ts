@@ -7,7 +7,6 @@ import { Helper } from './helper';
 import * as admin from 'firebase-admin';
 const DEBUG: boolean = true;
 
-
 @Injectable()
 export class UserService {
 
@@ -27,7 +26,7 @@ export class UserService {
         var user = null;
         var id = uuidv4();
         try{
-        
+             console.log(body);
             
             if (  body.name == unDefined ||
                 body.age == unDefined || body.email == unDefined ||
@@ -89,8 +88,8 @@ export class UserService {
         };
         
     } 
-   
-    async getAll() {
+
+    async getAll(){
 
         var userList = [];
         this.populatedData = null;  
@@ -506,7 +505,7 @@ export class UserService {
         else{
             return{
                 success: false,
-                data: "Email or Password is incorrect"
+                data: "Does not exist in database"
             } 
         }
 
@@ -514,18 +513,14 @@ export class UserService {
 
     saveToDb(user: User): boolean {
         try {
-            var potato = this.DB.collection("users").doc(user.id).set(user.toJson());
-            console.log(potato);
+            var apple = this.DB.collection("users").doc(user.id).set(user.toJson());
+            console.log(apple);
             this.users.set(user.id, user);
             return this.users.has(user.id);
         }catch (error) {
             console.log(error);
             return false;
         }
-    }
-
-    logAllUsers(){
-        console.log(this.getAll());    
     }
 
     async getLatestFromFirebase(){  

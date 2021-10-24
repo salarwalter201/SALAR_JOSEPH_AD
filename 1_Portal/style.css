@@ -17,6 +17,13 @@
     box-sizing: inherit;
     }
 
+    body {
+        background-color: rgb(171, 211, 243);
+        background: url(samurai.png);
+        background-repeat: no-repeat;
+        background-size: 1600px 800px;
+
+    }
     @font-face {
         font-family: mangat;
         src: url("mangat.ttf");
@@ -27,14 +34,7 @@
         text-align: center;
 
     }
-    body {
-        background-color: rgb(171, 211, 243);
-        background: url(samurai.png);
-        background-repeat: no-repeat;
-        background-size: 1600px 800px;
-
-    
-    }
+   
 
     .mainContent{
         width: 100vw;
