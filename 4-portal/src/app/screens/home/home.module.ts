@@ -1,15 +1,33 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HomeComponent } from './home.component';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
-
-
-@NgModule({
-  declarations: [
-    HomeComponent
-  ],
-  imports: [
-    CommonModule
-  ]
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
-export class HomeModule { }
+export class HomeComponent implements OnInit {
+  requestResult: any;
+
+  constructor(private router: Router, private api: HttpClient) { }
+
+  
+  ngOnInit(): void {
+  }
+ 
+  async display() {
+    var result:any =await this.api.get(environment.API_URL + "/user/all").toPromise();
+    
+    
+       this.requestResult = result.data
+      
+    
+    
+  
+    console.log(result.success);
+    // this.requestResult = result.data;
+ 
+}
+}

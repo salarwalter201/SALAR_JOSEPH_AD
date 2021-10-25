@@ -19,4 +19,66 @@
 
    
     
-    
+    body {
+        background-color: rgb(171, 211, 243);
+        background: url(samurai.png);
+        background-repeat: no-repeat;
+        background-size: 1600px 800px;
+
+    }
+    @font-face {
+        font-family: mangat;
+        src: url("mangat.ttf");
+    }
+
+    head 
+    {
+        text-align: center;
+
+    }
+   
+
+    .mainContent{
+        width: 100vw;
+        height: 100vh;
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        font-family: mangat;
+    }
+
+   
+    label{
+        padding-bottom: 4px;
+        padding-top: 4px;   
+       
+        
+    }
+
+    .inputs{
+        display:flex;
+        flex-direction: column;
+       
+    }
+    input {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+    button{
+        width: 100%;
+        height: 32px;
+        border-radius: 50px;
+        cursor: pointer;
+        animation: animate 3s linear infinite;
+        font-family: mangat;
+    }
+
+    @keyframes animate {
+
+        50%{
+            background-color: red;
+        }
+        100%{
+            background-color: yellow;
+        }
+    }

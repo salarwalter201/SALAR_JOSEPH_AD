@@ -1,14 +1,21 @@
-<div class="mainContent">
-    <div class="login">
-        <div class="inputs">
-            <label for="Header">WELCOME TO MY WEBSITE!</label>
-            
-            <label for="EMAIL">Email</label>
-            <input type="email" name="EMAIL" #email/>
-            <label for="PASSWORD">Password</label>
-            <input type="password" name="PASSWORD" #password/>
-        </div>
-        <button (click)="login(email.value,password.value)">LOGIN</button>
-    
-    </div>
+<h2>Login Page</h2><br>    
+    <div class="login">    
+    <form id="login" method="get" action="login.php">    
+        <label><b>Email<br>    
+        </b>    
+        </label>    
+        <input type="text" name="Uname" id="Uname" placeholder="Email" [formControl]="fCEmail"/>    
+        <br><br>    
+        <label><b>Password     
+        </b>    
+        </label>    
+        <input type="Password" name="Pass" id="Pass" placeholder="Password" [formControl]="fCPassword" />    
+        <br><br>  
+        <input type="button1" (click)="nav('register')" name="reg" id="reg" value="Register">
+        <br><br>
+        <input type="button" (click)="nav('login')" name="log" id="log" value="Log In Here">       
+        <br><br>    
+        <p>{{requestResult | json}}</p>
+        <input type="checkbox" id="check">   
+    </form>
   </div>
