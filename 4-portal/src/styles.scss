@@ -1,84 +1,52 @@
-* {
-    margin: 0;
-    padding: 0;
-    }
-    
-    html {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    }
-    
-    *,
-    *:before,
-    *:after {
-    -webkit-box-sizing: inherit;
-    -moz-box-sizing: inherit;
-    box-sizing: inherit;
-    }
+/* You can add global styles to this file, and also import other style files */
+body  
+{  
+    height : 100vh;
+    width : 100vw;
+    margin: 0;  
+    padding: 0;  
+    background-image: url("../src/assets/samurai.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    font-family: 'Arial'; 
+}
 
-   
-    
-    body {
-        background-color: rgb(171, 211, 243);
-        background: url(samurai.png);
-        background-repeat: no-repeat;
-        background-size: 1600px 800px;
+button,#createAcc, #back, #reg, #log, .button1{  
+    margin: auto;
+    text-align: center;  
+    color: black;  
+    padding-block-start: 5px;
+    background-image: linear-gradient(rgb(248, 203, 121), rgb(245, 161, 150)) ; 
+    border-radius: 10px ;
+    display: inline;
+    height:70%;
+}  
 
-    }
-    @font-face {
-        font-family: mangat;
-        src: url("mangat.ttf");
-    }
+label{  
+    color: #1a1414;  
+    font-size: 17px;  
+}  
 
-    head 
-    {
-        text-align: center;
+#name, #Age1, #email1, #pass, #pass2{  
+    width: 300px;  
+    height: 30px;  
+    border: none;  
+    border-radius: 17px;  
+    padding-left: 7px;  
+    color: rgb(78, 61, 61); 
+}
 
-    }
-   
+button:hover {
+    background-color:rgb(78, 61, 61);
+}
 
-    .mainContent{
-        width: 100vw;
-        height: 100vh;
-        display: grid;
-        justify-content: center;
-        align-content: center;
-        font-family: mangat;
-    }
+span{  
+    color: black;  
+    font-size: 17px;  
+}  
 
-   
-    label{
-        padding-bottom: 4px;
-        padding-top: 4px;   
-       
-        
-    }
-
-    .inputs{
-        display:flex;
-        flex-direction: column;
-       
-    }
-    input {
-        padding-top: 8px;
-        padding-bottom: 8px;
-    }
-    button{
-        width: 100%;
-        height: 32px;
-        border-radius: 50px;
-        cursor: pointer;
-        animation: animate 3s linear infinite;
-        font-family: mangat;
-    }
-
-    @keyframes animate {
-
-        50%{
-            background-color: red;
-        }
-        100%{
-            background-color: yellow;
-        }
-    }
+a{  
+    float: right;  
+    background-color: grey;  
+}  

@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
- 
+  // router: any;
 
   constructor(private router: Router, private api: HttpClient) { }
 
@@ -31,9 +31,16 @@ export class LoginComponent implements OnInit {
 
    if(result.success){
      this.nav('home');
+     
+   }
+   else{
+     console.log("Please Try Again");
    }
    console.log(result.success);
    this.requestResult = result.data;
+
+   
+ 
   }
 
    nav(destination: string){

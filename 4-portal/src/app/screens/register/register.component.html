@@ -1,7 +1,9 @@
-<h2>Register Page</h2><br> <br><br>
+<h2>REGISTER</h2><br> 
+
+<br><br>
 
     <div class="register">    
-    <form id="login" method="get" action="login.php" [formGroup]="egisterForm" (ngSubmit)="onSubmit()">    
+    <form id="login" method="get" action="login.php" [formGroup]="RegisterForm" (ngSubmit)="onSubmit()">    
         <label><b>Name<br>    
         </b>    
         </label>    
@@ -27,11 +29,9 @@
         </label>    
         <input type="password" name="pass" id="pass" placeholder="Password" formControlName="fcPassword2" />    
         <br><br> 
-    
-        <p>{{ error }}</p>
-        <p>{{egisterForm.value | json}}</p>
-        <p>{{egisterForm.status }}</p>
-        <button type="submit" [disabled]="!egisterForm.valid" id="createAcc" (click)="register()">
+     
+        <p>{{RegisterForm.status }}</p>
+        <button type="submit" [disabled]="!egisterForm.valid" id="createAcc" (click)="nav('login')">
           CREATE ACCOUNT
         </button><br><br>
         <p>{{requestResult | json}}</p>
@@ -42,3 +42,4 @@
         
         
 </div>    
+

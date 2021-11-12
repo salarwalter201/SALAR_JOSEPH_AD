@@ -1,7 +1,7 @@
-# compiled output
 3-nest/dist
 3-nest/node_modules
-my-key.json 
+0-test
+myKey.json
 
 # Logs
 logs
@@ -34,6 +34,3 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
-
-3-nest/node_modules/bs-logger/dist/logger/root.js

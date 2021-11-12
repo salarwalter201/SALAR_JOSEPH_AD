@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
     }
     if (!this.egisterForm.valid) {
       {
-        this.error = 'No fields must be empty';
+        alert('No fields must be empty');
         return;
       }
     }
@@ -81,6 +81,9 @@ export class RegisterComponent implements OnInit {
  
     if(result.success){
       this.nav('home');
+    }
+    else{
+      alert("wrong Input, Try again");
     }
     console.log(result.success);
    this.requestResult = result.data;

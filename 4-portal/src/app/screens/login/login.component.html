@@ -10,12 +10,17 @@
         </b>    
         </label>    
         <input type="Password" name="Pass" id="Pass" placeholder="Password" [formControl]="fCPassword" />    
-        <br><br>  
+        <br><br>    
         <input type="button1" (click)="nav('register')" name="reg" id="reg" value="Register">
         <br><br>
-        <input type="button" (click)="nav('login')" name="log" id="log" value="Log In Here">       
+        <input type="button1" (click)="login()" name="log" id="log" value="Log In Here">       
         <br><br>    
         <p>{{requestResult | json}}</p>
         <input type="checkbox" id="check">   
-    </form>
-  </div>
+         
+        <span>Remember me</span>    
+        <br><br>    
+        
+        
+    </form>     
+</div>    
