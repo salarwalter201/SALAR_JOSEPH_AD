@@ -9,6 +9,15 @@ import { HomeComponent } from './screens/home/home.component';
 import { LoginComponent } from './screens/login/login.component';
 import { RegisterComponent } from './screens/register/register.component';
 
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+// import { AngularFireAuthModule, PERSISTENCE } from '@angular/fire/compat/auth'; //
+import { initializeApp } from '@firebase/app';
+
+import {environment } from '../environments/environment';
+import {provideAuth, getAuth} from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import {PERSISTENCE } from '@angular/fire/compat/auth';
 
 @NgModule({
   declarations: [
@@ -22,9 +31,15 @@ import { RegisterComponent } from './screens/register/register.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-   
+    SharedModule,
+    FontAwesomeModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
   ],
-  providers: [],
+  providers: [{ provide: PERSISTENCE, useValue: 'session'}, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
